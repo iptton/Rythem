@@ -240,6 +240,7 @@ function updateConfigs(){
             if(s===""){
                return;
             }
+            s = this.__replaceField.innerText + "\n" + s;
             this.__replaceField.innerText = s;
 			this.__config.rule.replace = s;
             if(window.App){

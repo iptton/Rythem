@@ -227,7 +227,7 @@ void RyTableModel::setMaxRequestSize(int maxSize){
     _maxRequestSize = maxSize;
     int currentSize = pipesVector.size();
     if(currentSize > maxSize){
-        beginRemoveRows(QModelIndex(),0,_maxRequestSize);
+        beginRemoveRows(QModelIndex(),0,currentSize - _maxRequestSize - 1);
         int d = currentSize - maxSize;
         qDebug()<<"remove n="<<d;
         while( d-- > 0 ){
