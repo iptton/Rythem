@@ -24,9 +24,9 @@ function updateConfigs(){
         el.innerHTML =
             '<input class="ruleEnableCB" type="checkbox" checked>\
             <select>\
-                <option value="1" disabled>Complex Host</option>\
+                <option value="1">Complex Host</option>\
                 <option value="2">Simple Host</option>\
-                <option value="3" disabled>Remote Content</option>\
+                <option value="3">Remote Content</option>\
                 <option value="4">Local File</option>\
                 <option value="5">Local File Merge(config file)</option>\
                 <option value="6">Local Directory</option>\
@@ -494,7 +494,7 @@ function updateConfigs(){
                               "id":4,
 	                "name": "simple address example",
 	                "type": 2,
-	                "enable": false,
+	                "enable": true,
 	                "rule": {
 	                    "pattern": "http://abc.com",
 	                    "replace": "172.168.0.1"
@@ -502,7 +502,7 @@ function updateConfigs(){
                 }, {
 	                "name": "remote content example",
 	                "type": 3,
-	                "enable": true,
+	                "enable": false,
 	                "rule": {
 	                    "pattern": "http://abc.com/a.html",
 	                    "replace": "http://123.com/just_a_test/somedir/b.html"

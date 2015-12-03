@@ -2,6 +2,8 @@
 #define RYCONNECTIONTABLEVIEW_H
 
 #include <QTableView>
+#include <QAction>
+#include <QtWidgets>
 #include <QtCore>
 #include <QtGui>
 

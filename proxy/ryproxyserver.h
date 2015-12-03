@@ -30,7 +30,11 @@ class RyProxyServer : public QTcpServer
 
 
     protected:
+#if QT_VERSION >= 0x050000
+        void incomingConnection(qintptr handle);
+#else
         void incomingConnection(int handle);
+#endif
 
     private:
         QMutex connectionOpMutex;

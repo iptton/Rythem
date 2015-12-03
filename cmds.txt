@@ -1,0 +1,1 @@
+lsof -i -P | grep -i "listen"  # list all listened ports

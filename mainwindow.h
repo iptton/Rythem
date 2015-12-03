@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QtGui>
+#include <QtWidgets>
 #include <QtCore>
 #include <QtNetwork>
 #include <QtWebKit>
@@ -55,6 +56,7 @@ public slots:
         void onWaterfallActionTriggered();
         void onMessageFromOtherInstance();
         void checkNewVersion();
+        void loadConfigPage();
 
 public:
 	typedef struct __proxyInfo{
@@ -111,7 +113,6 @@ private slots:
     void onActionRemoveAll();
     void on_actionDebug_triggered();
     void on_actionCheckNew_triggered();
-    void loadConfigPage();
     void onFilterTextChanged(QString);
 };
 

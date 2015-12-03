@@ -90,11 +90,19 @@ QVariant RyTableModel::data(const QModelIndex &index, int role) const{
 
             RyPipeData_ptr d = pipesVector.at(index.row());
             if(d->isMatchingRule){
+#if QT_VERSION >= 0x050000
+                return QVariant((int)Qt::cyan);
+#else
                 return Qt::cyan;
+#endif
+
                 //return QVariant((int)Qt::cyan);
             }else if(d->responseStatus.startsWith('4') || d->responseStatus.startsWith('5')){
+#if QT_VERSION >= 0x050000
+                return QVariant((int)Qt::darkGray);
+#else
                 return Qt::darkGray;
-                //return QVariant((int)Qt::darkCyan);
+#endif
             }
         }else{
             return QVariant();

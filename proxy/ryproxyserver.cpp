@@ -105,8 +105,13 @@ QTcpSocket* RyProxyServer::getSocket(QString address,quint16 port,bool* isFromCa
 //
 //   when new connection come and has the same handle.
 //   reuse old RyConnection
-void RyProxyServer::incomingConnection(int handle){
-    //qDebug()<<"incomingConnection";
+
+#if QT_VERSION >= 0x050000
+void RyProxyServer::incomingConnection(qintptr handle){
+#else
+void RyProxyServer::incomingConnection(qintptr handle){
+#endif
+    qDebug()<<"incomingConnection";
     if(isStoping){
         qDebug()<<"incommingConnection "<<isStoping;
         return;

@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui network script webkit
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets webkitwidgets
 
 
@@ -172,5 +173,8 @@ ICON = Rythem2.icns
 
 TRANSLATIONS = rythem_zh_CN.ts
 CODECFORTR = UTF-8
+
+DISTFILES += \
+    cmds.txt
 
 

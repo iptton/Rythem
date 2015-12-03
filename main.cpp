@@ -110,15 +110,18 @@ int main(int argc, char *argv[])
     server->connect(server,SIGNAL(pipeBegin(RyPipeData_ptr)),&w,SLOT(onNewPipe(RyPipeData_ptr)));
     server->connect(server,SIGNAL(pipeComplete(RyPipeData_ptr)),&w,SLOT(onPipeUpdate(RyPipeData_ptr)));
     server->connect(server,SIGNAL(pipeError(RyPipeData_ptr)),&w,SLOT(onPipeUpdate(RyPipeData_ptr)));
+
     bool isListenSuccess = server->listen(QHostAddress::Any,8889);
 
     if(!isListenSuccess){
+        qDebug()<<"listen failed";
         exit(1);
     }
     qDebug()<<"listen success";
 
     //w.showMaximized();
     w.show();
+    w.loadConfigPage();
     return a.exec();
 
 }

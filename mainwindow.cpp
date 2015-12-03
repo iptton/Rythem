@@ -472,7 +472,7 @@ MainWindow::MainWindow(QWidget *parent) :
     addJsObject();
     connect(ui->webView->page()->mainFrame(),SIGNAL(javaScriptWindowObjectCleared()),this,SLOT(addJsObject()));
     //修复proxy服务器过完启动导致配置页面空白的问题 延迟一秒加载
-    QTimer::singleShot(1000, this, SLOT(loadConfigPage()));
+    //QTimer::singleShot(1000, this, SLOT(loadConfigPage()));
 
     // should use slot to do this
     //ui->composer->setupProxy(RyProxyServer::instance()->serverAddress().toString(),

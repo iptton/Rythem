@@ -1,6 +1,6 @@
 #include "rytabwidget.h"
 #include "rymimedata.h"
-
+#include <QTabBar>
 
 RyTabWidget::RyTabWidget(QWidget *parent) :
     QTabWidget(parent){

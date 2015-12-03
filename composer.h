@@ -1,6 +1,13 @@
 #ifndef COMPOSER_H
 #define COMPOSER_H
 
+
+
+#if QT_VERSION >= 0x050000
+#include <QtWidgets>
+#endif
+
+#include <QWidget>
 #include <QtGui>
 #include <QtNetwork>
 #include "proxy/rypipedata.h"

@@ -140,7 +140,14 @@ QList<QSharedPointer<RyRule> > RyRuleGroup::getMatchRules(const QString& url){
 
         bool isMatch = false;
         if(type == RyRule::COMPLEX_ADDRESS_REPLACE){
-            isMatch = false;//TODO
+            if(isRegExp){
+                pattern  = pattern.mid(QString("regex:").length());
+                //qDebug()<<"pattern="<<pattern;
+                QRegExp rx(pattern, Qt::CaseInsensitive, QRegExp::Wildcard);
+                isMatch = rx.exactMatch(url);
+            }else{
+                isMatch = (pattern == url);
+            }
         }else if(type == RyRule::REMOTE_CONTENT_REPLACE){
             isMatch = (url.indexOf(pattern)!=-1);
         }else if(type == RyRule::SIMPLE_ADDRESS_REPLACE){
