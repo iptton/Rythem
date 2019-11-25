@@ -7,7 +7,7 @@ namespace rule{
 
 class RyRuleGroup{
 public:
-    RyRuleGroup(const QScriptValue& group);
+    RyRuleGroup(const QJSValue& group);
     ~RyRuleGroup();
     /*
     RyRuleGroup(const QString& groupName,bool isOwner=false);
@@ -15,8 +15,8 @@ public:
     */
     QString toJSON(bool format=false,int space = 12)const;
     void addRules(const QString& rules);
-    void addRules(const QScriptValue& rules);
-    QSharedPointer<RyRule> addRule(const QScriptValue& value);
+    void addRules(const QJSValue& rules);
+    QSharedPointer<RyRule> addRule(const QJSValue& value);
     QSharedPointer<RyRule> addRule(QSharedPointer<RyRule> rule);
     QSharedPointer<RyRule> addRule(int type,QString pattern,QString replace);
     QSharedPointer<RyRule> addRule(quint64 ruleId,int type,QString pattern,QString replace);

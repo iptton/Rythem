@@ -5,7 +5,7 @@
 #include <QtWidgets>
 #include <QtCore>
 #include <QtNetwork>
-#include <QtWebKit>
+#include <QWebEnginePage>
 #include "rytablemodel.h"
 #include "proxy/rypipedata.h"
 

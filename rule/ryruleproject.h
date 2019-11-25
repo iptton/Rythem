@@ -7,7 +7,7 @@ namespace rule{
 
 class RyRuleProject{
 public:
-    RyRuleProject(const QScriptValue& project);
+    RyRuleProject(const QJSValue& project);
 
     RyRuleProject(QString localAddress,
                   QString remoteAddress="",
@@ -25,7 +25,7 @@ public:
     void removeRuleGroup(quint64 groupId);
 
     bool addRuleGroups(const QString& content);
-    QSharedPointer<RyRuleGroup> addRuleGroup(const QScriptValue& group,bool updateLocalFile=false);
+    QSharedPointer<RyRuleGroup> addRuleGroup(const QJSValue& group,bool updateLocalFile=false);
 
     QString localAddress()const;
     QString toJson(bool format=false,int beforeSpace = 4)const;

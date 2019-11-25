@@ -31,7 +31,7 @@ public:
     */
     void loadLocalConfig(const QString& configFileName);
     void setupConfig(const QString& configContent);
-    void setupConfig(const QScriptValue& value);
+    void setupConfig(const QJSValue& value);
 
 
     void removeGroup(quint64 groupId);
@@ -42,7 +42,7 @@ public:
                       const QString& address,
                       bool isRemote=false,
                       const QString& host="");
-    const QSharedPointer<RyRuleProject> addRuleProject(const QScriptValue& value);
+    const QSharedPointer<RyRuleProject> addRuleProject(const QJSValue& value);
     const QSharedPointer<RyRuleGroup> addGroupToLocalProject(const QString& content);//新增
     const QSharedPointer<RyRule> addRuleToGroup(const QString& msg,quint64 groupId);
     //本地project

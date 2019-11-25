@@ -1,6 +1,10 @@
 #include "ryrulemanager.h"
 #include "ryrulereplacecontent.h"
 
+#include <QJSValueIterator>
+#include <QJSValue>
+#include <QJSEngine>
+
 extern QString appPath;
 
 using namespace rule;
@@ -89,15 +93,17 @@ void RyRuleManager::loadLocalConfig(const QString& configFileName){
 }
 
 void RyRuleManager::setupConfig(const QString& configContent){
-    QScriptEngine engine;
-    QScriptValue value = engine.evaluate("(" + configContent + ")");
-    QScriptValueIterator projectIt(value);
+    QJSEngine engine;
+    QJSValue value = engine.evaluate("(" + configContent + ")");
+
+    QJSValueIterator projectIt(value);
+
     while(projectIt.hasNext()){
         projectIt.next();
-        if (projectIt.flags() & QScriptValue::SkipInEnumeration){
-            continue;
-        }
-        QScriptValue project = projectIt.value();
+//        if (projectIt.flags() & QJSValue::SkipInEnumeration){
+//            continue;
+//        }
+        QJSValue project = projectIt.value();
         addRuleProject(project);
     }
 }
@@ -122,7 +128,7 @@ void RyRuleManager::removeRule(quint64 ruleId,quint64 groupId){
     }
 }
 
-const QSharedPointer<RyRuleProject> RyRuleManager::addRuleProject(const QScriptValue &project){
+const QSharedPointer<RyRuleProject> RyRuleManager::addRuleProject(const QJSValue &project){
     RyRuleProject *rp = new RyRuleProject(project);
     bool isProjectValid = rp->isValid();
     if(!isProjectValid){
@@ -144,8 +150,8 @@ const QSharedPointer<RyRuleProject> RyRuleManager::addRuleProject(const QScriptV
 
 const QSharedPointer<RyRuleProject> RyRuleManager::addRuleProject(const QString& groupJSONData){
     //qDebug()<<groupJSONData;
-    QScriptEngine engine;
-    QScriptValue value = engine.evaluate("(" + groupJSONData + ")");
+    QJSEngine engine;
+    QJSValue value = engine.evaluate("(" + groupJSONData + ")");
     return addRuleProject(value);
 }
 
@@ -181,8 +187,8 @@ const QSharedPointer<RyRuleGroup> RyRuleManager::addGroupToLocalProject(const QS
     settings.setIniCodec("UTF-8");
     QString defaultProjectFullFileName = settings.fileName();//appPath+"/"+projectName;
     if(_projectFileNameToProjectMap.contains(defaultProjectFullFileName)){
-        QScriptEngine engine;
-        QScriptValue value = engine.evaluate("("+content+")");
+        QJSEngine engine;
+        QJSValue value = engine.evaluate("("+content+")");
         qDebug()<<"default project exists";
         QSharedPointer<RyRuleProject> project = _projectFileNameToProjectMap.value(defaultProjectFullFileName);
         QSharedPointer<RyRuleGroup> group = project->addRuleGroup(value,true);
@@ -197,9 +203,9 @@ const QSharedPointer<RyRuleGroup> RyRuleManager::addGroupToLocalProject(const QS
         //qDebug()<<QString(ba);
         f.write(ba);
         f.close();
-        QScriptEngine engine;
-        QScriptValue project = engine.globalObject();
-        project.setProperty("localAddress",QScriptValue(defaultProjectFullFileName));
+        QJSEngine engine;
+        QJSValue project = engine.globalObject();
+        project.setProperty("localAddress",QJSValue(defaultProjectFullFileName));
         //qDebug()<<project.property("localAddress").toString();
         QSharedPointer<RyRuleProject> p = addRuleProject(project);
         //qDebug()<<"project = "<<p->toJson();
@@ -219,8 +225,8 @@ const QSharedPointer<RyRule> RyRuleManager::addRuleToGroup(const QString& msg,qu
     if(_groupToProjectMap.contains(groupId)){
         QSharedPointer<RyRuleProject> p = _groupToProjectMap[groupId];
         QSharedPointer<RyRuleGroup>  g = p->groupById(groupId);
-        QScriptEngine engine;
-        QScriptValue v = engine.evaluate("("+msg+")");
+        QJSEngine engine;
+        QJSValue v = engine.evaluate("("+msg+")");
         return g->addRule(v);
 
     }else{
@@ -241,9 +247,9 @@ const QSharedPointer<RyRuleProject> RyRuleManager::addLocalProject(const QString
     }
     */
     if(QFile::exists(filePath)){
-        QScriptEngine engine;
-        QScriptValue project = engine.globalObject();
-        project.setProperty("localAddress",QScriptValue(filePath));
+        QJSEngine engine;
+        QJSValue project = engine.globalObject();
+        project.setProperty("localAddress",QJSValue(filePath));
         return this->addRuleProject(project);
     }
     return QSharedPointer<RyRuleProject>();

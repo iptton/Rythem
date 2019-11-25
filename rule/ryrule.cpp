@@ -38,12 +38,12 @@ quint64 RyRule::getNextRuleId(){
                 "rule":{"pattern":"http://w.qq.com/a.manifest",
                 "replace":"./test.manifest"}
     */
-RyRule::RyRule(quint64 groupId,const QScriptValue& rule){
+RyRule::RyRule(quint64 groupId,const QJSValue& rule){
     init(RyRule::getNextRuleId(),groupId,
-            rule.property("type").toInt32(),
+            rule.property("type").toInt(),
          rule.property("rule").property("pattern").toString(),
         rule.property("rule").property("replace").toString(),
-         (rule.property("enable").toInt32() == 1));
+         (rule.property("enable").toInt() == 1));
            // qDebug()<<"RyRule "<<this->toJSON();
 }
 

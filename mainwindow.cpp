@@ -20,6 +20,7 @@
 #ifdef Q_OS_WIN
 #include "zlib/zlib.h"
 #else
+#include <QWebEngineSettings>
 #include <zlib.h>
 #endif
 
@@ -27,7 +28,7 @@
 #include <quazip/quazipfile.h>
 #include "rytablesortfilterproxymodel.h"
 #include "ryupdatechecker.h"
-#include <QWebFrame>
+#include <QWebEnginePage>
 
 extern QString version;
 extern QString appPath;
@@ -468,9 +469,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     _jsBridge = new RyJsBridge();
-    QWebSettings::globalSettings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+//    QWebEngineSettings::globalSettings()->setAttribute(QWebEngineSettings::DeveloperExtrasEnabled, true);
+
     addJsObject();
-    connect(ui->webView->page()->mainFrame(),SIGNAL(javaScriptWindowObjectCleared()),this,SLOT(addJsObject()));
+    connect(ui->webView->page(),SIGNAL(javaScriptWindowObjectCleared()),this,SLOT(addJsObject()));
     //修复proxy服务器过完启动导致配置页面空白的问题 延迟一秒加载
     //QTimer::singleShot(1000, this, SLOT(loadConfigPage()));
 
@@ -838,7 +840,7 @@ void MainWindow::toggleProxy(){
                     ProxyAutoConfig::instance()->setHttpProxy(proxyStr);
                 }
                 if (httpsEnabled && CFNumberGetValue(httpsEnabled, kCFNumberIntType, &tmp) && tmp){
-                    CFStringRef host = (CFStringRef)CFDictionaryGetValue(proxies, kSCPropNetProxiesHTTPSProxy);
+                    CFStringRef host = static_cast<CFStringRef>(CFDictionaryGetValue(proxies, kSCPropNetProxiesHTTPSProxy));
                     CFNumberRef port = (CFNumberRef)CFDictionaryGetValue(proxies, kSCPropNetProxiesHTTPSPort);
                     QString hostQ = QString::fromUtf8( myCFStringCStringPtr(host,kCFStringEncodingUTF8) );
                     UInt64 portQ=20;
@@ -917,7 +919,7 @@ void MainWindow::contextMenuEvent(QContextMenuEvent *event){
 }
 
 void MainWindow::addJsObject(){
-    ui->webView->page()->mainFrame()->addToJavaScriptWindowObject(QString("App"),_jsBridge);
+//    ui->webView->page()->addToJavaScriptWindowObject(QString("App"),_jsBridge);
 }
 
 void MainWindow::onAction(QAction *action){

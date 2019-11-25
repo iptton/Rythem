@@ -2,6 +2,8 @@
 
 using namespace rule;
 
+#include <QJSValueIterator>
+
 quint64 RyRuleGroup::_nextGroupId = 0;
 QMutex RyRuleGroup::mutex;
 quint64 RyRuleGroup::getNextGroupId(){
@@ -10,13 +12,13 @@ quint64 RyRuleGroup::getNextGroupId(){
     locker.unlock();
     return _nextGroupId;
 }
-RyRuleGroup::RyRuleGroup(const QScriptValue &group){
+RyRuleGroup::RyRuleGroup(const QJSValue &group){
     // name enable rules
     _groupId = RyRuleGroup::getNextGroupId();
     QString name = group.property("name").toString();
-    bool enable = group.property("enable").toBoolean();
-    QScriptValue rules = group.property("rules");
-    if(! rules.isValid()){
+    bool enable = group.property("enable").toBool();
+    QJSValue rules = group.property("rules");
+    if(rules.isUndefined()){
     }else{
         _groupName = name;
         enabled = enable;
@@ -44,18 +46,19 @@ RyRuleGroup::RyRuleGroup(quint64 groupId, const QString &groupName, bool isOwner
 void RyRuleGroup::addRules(const QString& rules){
     Q_UNUSED(rules)
 }
-void RyRuleGroup::addRules(const QScriptValue& rules){
-    QScriptValueIterator it(rules);
+void RyRuleGroup::addRules(const QJSValue& rules){
+    QJSValueIterator it(rules);
+
     while(it.hasNext()){
         it.next();
-        if(it.flags() & QScriptValue::SkipInEnumeration){
-            continue;
-        }
-        QScriptValue v = it.value();
+//        if(it.flags() & QJSValue::SkipInEnumeration){
+//            continue;
+//        }
+        QJSValue v = it.value();
         addRule(v);
     }
 }
-QSharedPointer<RyRule> RyRuleGroup::addRule(const QScriptValue &value){
+QSharedPointer<RyRule> RyRuleGroup::addRule(const QJSValue &value){
     RyRule *rule = new RyRule(_groupId,value);
     QSharedPointer<RyRule> p(rule);
     return addRule(p);
@@ -77,9 +80,9 @@ QSharedPointer<RyRule> RyRuleGroup::addRule(quint64 ruleId,int type,QString patt
 }
 
 QSharedPointer<RyRule> RyRuleGroup::updateRule(const QString& ruleJson){
-    QScriptEngine engine;
-    QScriptValue value = engine.evaluate("("+ruleJson+")");
-    quint64 ruleId = value.property("id").toInt32();
+    QJSEngine engine;
+    QJSValue value = engine.evaluate("("+ruleJson+")");
+    quint64 ruleId = static_cast<quint64>(value.property("id").toInt());
     QSharedPointer<RyRule> ret;
     QListIterator<QSharedPointer<RyRule> > it(_rules);
     while(it.hasNext()){
@@ -99,8 +102,8 @@ QSharedPointer<RyRule> RyRuleGroup::updateRule(const QString& ruleJson){
     return ret;
 }
 void RyRuleGroup::update(const QString &groupJson){
-    QScriptEngine engine;
-    QScriptValue value = engine.evaluate("("+groupJson+")");
+    QJSEngine engine;
+    QJSValue value = engine.evaluate("("+groupJson+")");
     QString name = value.property("name").toString();
     bool enable = value.property("enable").toBool();
     qDebug()<<"update group:"<<name;

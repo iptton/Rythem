@@ -1,13 +1,13 @@
 #ifndef RYWEBVIEW_H
 #define RYWEBVIEW_H
 
-#include <QWebView>
+#include <QWebEngineView>
 
-class RyWebView : public QWebView
+class RyWebView : public QWebEngineView
 {
     Q_OBJECT
 public:
-    explicit RyWebView(QWidget *parent = 0);
+    explicit RyWebView(QWidget *parent = nullptr);
 
 signals:
     

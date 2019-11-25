@@ -159,7 +159,7 @@ Host: www.alloyteam.com
         <translation type="obsolete">非windows系统需手动设置代理为 127.0.0.1:8889</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="506"/>
+        <location filename="mainwindow.cpp" line="508"/>
         <source>-</source>
         <translation>-</translation>
     </message>
@@ -168,7 +168,7 @@ Host: www.alloyteam.com
         <translation type="obsolete">请了</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="507"/>
+        <location filename="mainwindow.cpp" line="509"/>
         <source>Please drag to Applications dir first 
 
  otherwise creat replace rule will cause crash on MacOS 10.8 (Mountain Lion)</source>
@@ -178,71 +178,71 @@ Host: www.alloyteam.com
 否则需要手动设置代理且在创建替换规则时 Rythem 会崩溃</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="517"/>
+        <location filename="mainwindow.cpp" line="519"/>
         <source>Port:8889 Address: </source>
         <translation>监听端口：8889 本机IP: </translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="527"/>
+        <location filename="mainwindow.cpp" line="529"/>
         <source>           --By AlloyTeam::iptton</source>
         <translation>                      --AlloyTeam::iptton</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="528"/>
+        <location filename="mainwindow.cpp" line="530"/>
         <source> version:</source>
         <translation>版本：</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="555"/>
+        <location filename="mainwindow.cpp" line="557"/>
         <source>&amp;File</source>
         <translation>文件(&amp;F)</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="556"/>
+        <location filename="mainwindow.cpp" line="558"/>
         <source>&amp;import session...</source>
         <translation>导入会话(&amp;i)...</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="557"/>
+        <location filename="mainwindow.cpp" line="559"/>
         <source>hide image requests</source>
         <translation>隐藏图片请求</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="559"/>
+        <location filename="mainwindow.cpp" line="561"/>
         <source>hide 304s</source>
         <translation>隐藏304</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="561"/>
+        <location filename="mainwindow.cpp" line="563"/>
         <source>show matching sessions only</source>
         <translation>只显示匹配规则的请求</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="563"/>
+        <location filename="mainwindow.cpp" line="565"/>
         <source>hide connect tunnels</source>
         <translation>隐藏Connect遂道</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="566"/>
+        <location filename="mainwindow.cpp" line="568"/>
         <source>limit max save request</source>
         <translation>设置请求最大显示数目</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="599"/>
+        <location filename="mainwindow.cpp" line="601"/>
         <source>select file to open</source>
         <translation>选择文件</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="865"/>
-        <location filename="mainwindow.cpp" line="894"/>
-        <location filename="mainwindow.cpp" line="895"/>
+        <location filename="mainwindow.cpp" line="867"/>
+        <location filename="mainwindow.cpp" line="896"/>
+        <location filename="mainwindow.cpp" line="897"/>
         <source>start capture</source>
         <translation>开始抓包</translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="874"/>
-        <location filename="mainwindow.cpp" line="890"/>
-        <location filename="mainwindow.cpp" line="891"/>
+        <location filename="mainwindow.cpp" line="876"/>
+        <location filename="mainwindow.cpp" line="892"/>
+        <location filename="mainwindow.cpp" line="893"/>
         <source>stop capture</source>
         <translation>停止抓包</translation>
     </message>
@@ -308,12 +308,12 @@ Host: www.alloyteam.com
 <context>
     <name>RyTableModel</name>
     <message>
-        <location filename="rytablemodel.cpp" line="81"/>
+        <location filename="rytablemodel.cpp" line="85"/>
         <source>unknown..%1</source>
         <translation>未知..%1</translation>
     </message>
     <message>
-        <location filename="rytablemodel.cpp" line="84"/>
+        <location filename="rytablemodel.cpp" line="88"/>
         <source>unknown..2</source>
         <translation>未知内容..2</translation>
     </message>

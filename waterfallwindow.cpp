@@ -1,4 +1,4 @@
-#include <QWebFrame>
+#include <QWebEnginePage>
 #include "waterfallwindow.h"
 #include "ui_waterfallwindow.h"
 
@@ -50,10 +50,10 @@ void WaterfallWindow::setPipeData(QList<RyPipeData_ptr> list){
         }
 
         //invoke js update method
-        QWebFrame *frame = ui->webView->page()->mainFrame();
+        QWebEnginePage *frame = ui->webView->page();
         QString args = "[" + results.join(",") + "]";
         qDebug()<<args;
-        frame->evaluateJavaScript("window.updateAllConnections(" + args + ")");
+        frame->runJavaScript("window.updateAllConnections(" + args + ")");
     }
 }
 

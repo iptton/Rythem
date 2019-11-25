@@ -3,7 +3,8 @@
 
 #include <QtCore>
 #include <QtNetwork>
-#include <QtScript>
+#include <QJSEngine>
+#include <QJSValue>
 
 #include <QDebug>
 
@@ -21,7 +22,7 @@ public:
         LOCAL_DIR_REPLACE = 6,
         LOCAL_FILES_REPLACE2 = 7
     };
-    RyRule(quint64 groupId,const QScriptValue& rule);
+    RyRule(quint64 groupId,const QJSValue& rule);
     RyRule(quint64 groupId,int type,const QString& pattern,const QString& replace,bool enable = true);
     RyRule(quint64 id,quint64 groupId,int type,const QString& pattern,const QString& replace,bool enable=true);
 
@@ -31,9 +32,9 @@ public:
     QString pattern();
     QString replace();
 
-    void update(const QScriptValue& value){
+    void update(const QJSValue& value){
         //qDebug()<<"before"<<this->toJSON();
-        this->_type = value.property("type").toInt32();
+        this->_type = value.property("type").toInt();
         this->enabled = value.property("enable").toBool();
         this->_pattern = value.property("rule").property("pattern").toString();
         this->_replace = value.property("rule").property("replace").toString();

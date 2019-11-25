@@ -15,7 +15,7 @@ class WaterfallWindow : public QMainWindow
     Q_OBJECT
     
 public:
-    explicit WaterfallWindow(QWidget *parent = 0);
+    explicit WaterfallWindow(QWidget *parent = nullptr);
     ~WaterfallWindow();
     void setPipeData(QList<RyPipeData_ptr> list);
 

@@ -3,6 +3,7 @@
 #include <QVector>
 #include <QStringList>
 #include <QDebug>
+#include <QBrush>
 
 RyTableModel::RyTableModel(QObject *parent) :
     QAbstractTableModel(parent),_pipeNumber(0),_maxRequestSize(30){
@@ -71,7 +72,10 @@ QString rypipeDataGetDataByColumn(RyPipeData_ptr p, int column){
 }
 
 QVariant RyTableModel::data(const QModelIndex &index, int role) const{
+    qDebug()<<"index: "<<index<<" role:"<<role;
     if(role == Qt::DisplayRole || role == Qt::ToolTipRole){
+
+        qDebug()<<"role display or tool tips";
         int row = index.row();
         int column = index.column();
         RyPipeData_ptr p;
@@ -85,27 +89,23 @@ QVariant RyTableModel::data(const QModelIndex &index, int role) const{
         }
         return rypipeDataGetDataByColumn(p,column);
 
-    }else if(role == Qt::BackgroundColorRole){
+    }else if(role == Qt::BackgroundRole){
+        qDebug()<<"count "<< pipesVector.count()<<" index row "<<index.row();
         if(pipesVector.count()>index.row()){
 
             RyPipeData_ptr d = pipesVector.at(index.row());
-            if(d->isMatchingRule){
-#if QT_VERSION >= 0x050000
-                return QVariant((int)Qt::cyan);
-#else
-                return Qt::cyan;
-#endif
 
-                //return QVariant((int)Qt::cyan);
+            qDebug()<<"is MatchingRule?"<<d->isMatchingRule;
+
+            if(d->isMatchingRule){
+                return QBrush(Qt::red);
             }else if(d->responseStatus.startsWith('4') || d->responseStatus.startsWith('5')){
-#if QT_VERSION >= 0x050000
-                return QVariant((int)Qt::darkGray);
-#else
-                return Qt::darkGray;
-#endif
+                return QVariant();
+            }else{
+                return QVariant();
             }
         }else{
-            return QVariant();
+            return QBrush(Qt::red);
         }
     }else if(role == RyTableModel::RowDataRole){
         if(pipesVector.count()>index.row()){
@@ -113,7 +113,7 @@ QVariant RyTableModel::data(const QModelIndex &index, int role) const{
         }else{
             return QVariant();
         }
-    }else{
+    } else {
         return QVariant();
     }
 }

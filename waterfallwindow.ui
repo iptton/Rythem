@@ -16,8 +16,8 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QWebView" name="webView">
-      <property name="url">
+     <widget class="QWebEngineView" name="webView" native="true">
+      <property name="url" stdset="0">
        <url>
         <string>qrc:/web/waterfall/RythemTimes/index.html</string>
        </url>
@@ -40,9 +40,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QWebView</class>
+   <class>QWebEngineView</class>
    <extends>QWidget</extends>
-   <header>QtWebKit/QWebView</header>
+   <header>QWebEngineView</header>
   </customwidget>
  </customwidgets>
  <resources/>

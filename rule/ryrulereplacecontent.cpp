@@ -197,7 +197,7 @@ QPair<QByteArray,QByteArray> RyRuleReplaceContent::getLocalMergeReplaceContent(b
     QString mimeTypeKey;
     QString mimeType = "text/plain";
     QString encode = "utf-8";
-    QScriptEngine engine;
+    QJSEngine engine;
     QString mergeFileContent;
     QMap<QString,QVariant> mergeValueMap;
     bool mergeContentHasError=false;
@@ -211,8 +211,8 @@ QPair<QByteArray,QByteArray> RyRuleReplaceContent::getLocalMergeReplaceContent(b
         mimeType = RyRule::getMimeType(mimeTypeKey,"application/javascript");
         mergeFileContent = file.readAll();
         mergeValueMap = engine.evaluate(mergeFileContent.prepend("(").append(")")).toVariant().toMap();
-        if(engine.hasUncaughtException() || mergeValueMap.isEmpty()){//wrong content
-            qDebug() << "wrong qzmin format:" << replace << mergeFileContent << engine.uncaughtException().toString();
+        if(mergeValueMap.isEmpty()){//wrong content
+            qDebug() << "wrong qzmin format:" << replace << mergeFileContent;
             mergeContentHasError = true;
         }else{
             if(mergeValueMap.contains("encode")){
@@ -221,12 +221,12 @@ QPair<QByteArray,QByteArray> RyRuleReplaceContent::getLocalMergeReplaceContent(b
             //qDebug()<<mergeValueMap;
             //qDebug()<<mergeFileContent;
             if(mergeValueMap["projects"].toList().isEmpty() ){
-                qDebug() << "wrong qzmin format:" << replace << mergeFileContent << engine.uncaughtException().toString();
+                qDebug() << "wrong qzmin format:" << replace << mergeFileContent;
                 mergeContentHasError = true;
             }else{
                 mergeValueMap = mergeValueMap["projects"].toList().first().toMap();
                 if(mergeValueMap["include"].toList().isEmpty()){
-                    qDebug() << "wrong qzmin format:" << replace << mergeFileContent << engine.uncaughtException().toString();
+                    qDebug() << "wrong qzmin format:" << replace << mergeFileContent;
                     mergeContentHasError = true;
                 }
             }

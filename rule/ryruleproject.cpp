@@ -2,7 +2,10 @@
 
 using namespace rule;
 
-RyRuleProject::RyRuleProject(const QScriptValue& project){
+#include <QJSValueIterator>
+#include <QJSEngine>
+
+RyRuleProject::RyRuleProject(const QJSValue& project){
     QString localAddress = project.property("localAddress").toString();
     QString remoteAddress = project.property("remoteAddress").toString();
     QString owner = project.property("owner").toString();
@@ -116,23 +119,24 @@ void RyRuleProject::removeRuleGroup(quint64 groupId){
 }
 
 bool RyRuleProject::addRuleGroups(const QString& content){
-    QScriptEngine engine;
-    QScriptValue value = engine.evaluate("("+content+")");
-    if(engine.hasUncaughtException()){
+    QJSEngine engine;
+    QJSValue value = engine.evaluate("("+content+")");
+
+    if(value.isUndefined()){
         qDebug()<<"invalid group data"<<content;
         return false;
     }else{
-        if(!value.property("groups").isValid()){
-            qDebug()<<"invalid group data"<<content;
-            return false;
-        }
-        QScriptValueIterator gIt(value.property("groups"));
+//        if(!value.property("groups").isValid()){
+//            qDebug()<<"invalid group data"<<content;
+//            return false;
+//        }
+        QJSValueIterator gIt(value.property("groups"));
         while(gIt.hasNext()){
             gIt.next();
-            if(gIt.flags() & QScriptValue::SkipInEnumeration){
-                continue;
-            }
-            QScriptValue g = gIt.value();
+//            if(gIt.flags() & QJSValue::SkipInEnumeration){
+//                continue;
+//            }
+            QJSValue g = gIt.value();
             QSharedPointer<RyRuleGroup> g2 = addRuleGroup(g);
             if(g2.isNull()){
                 qDebug()<<"getGroup Failed";
@@ -144,7 +148,7 @@ bool RyRuleProject::addRuleGroups(const QString& content){
         return true;
     }
 }
-QSharedPointer<RyRuleGroup> RyRuleProject::addRuleGroup(const QScriptValue& group,bool updateLocalFile){
+QSharedPointer<RyRuleGroup> RyRuleProject::addRuleGroup(const QJSValue& group,bool updateLocalFile){
     Q_UNUSED(updateLocalFile)
     RyRuleGroup *g = new RyRuleGroup(group);
     QSharedPointer<RyRuleGroup> groupPtr(g);

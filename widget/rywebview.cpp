@@ -1,10 +1,10 @@
 #include "rywebview.h"
 #include "rymimedata.h"
 #include <QtEvents>
-#include <QWebFrame>
+#include <QWebEngineView>
 
 RyWebView::RyWebView(QWidget *parent) :
-    QWebView(parent){
+    QWebEngineView(parent){
     setAcceptDrops(true);
 }
 void RyWebView::dragEnterEvent(QDragEnterEvent *event){
@@ -27,7 +27,7 @@ void RyWebView::dropEvent(QDropEvent *event){
         QString url = d->fullUrl;
         url.replace('\'',"\\'");
         QPoint p = event->pos();
-        page()->mainFrame()->evaluateJavaScript(
+        this->page()->runJavaScript(
                     QString("callbackFromApp('newRule',{pos:{x:%1,y:%2},url:'%3'})")
                     .arg(p.x())
                     .arg(p.y())
