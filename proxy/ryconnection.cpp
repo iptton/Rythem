@@ -16,8 +16,8 @@ RyConnection::RyConnection(int socketHandle,quint64 connectionId,QObject* parent
     :QObject(parent),
       _handle(socketHandle),
       _connectionId(connectionId),
-      _requestSocket(NULL),
-      _responseSocket(NULL){
+      _requestSocket(nullptr),
+      _responseSocket(nullptr){
 
     closed = false;
     _pipeTotal = 0;
@@ -37,14 +37,14 @@ RyConnection::~RyConnection(){
         _requestSocket->blockSignals(true);
         _requestSocket->abort();
         delete _requestSocket;
-        _requestSocket = NULL;
+        _requestSocket = nullptr;
     }
     if(_responseSocket){
         _responseSocket->disconnect(this);
         _responseSocket->blockSignals(true);
         _responseSocket->abort();
         delete _responseSocket;
-        _responseSocket = NULL;
+        _responseSocket = nullptr;
     }
 }
 int RyConnection::handle()const{
@@ -79,7 +79,7 @@ void RyConnection::run(){
     _requestBuffer.clear();
     _requestState = _responseState = ConnectionStateInit;
     _sendingPipeData.clear();
-    _responseSocket = NULL;
+    _responseSocket = nullptr;
 
     //监听事件
     connect(_requestSocket,SIGNAL(readyRead()),SLOT(onRequestReadyRead()));
@@ -126,7 +126,7 @@ void RyConnection::onRequestClose(){
                     _responseSocket);
          */
     }
-    _responseSocket = NULL;
+    _responseSocket = nullptr;
 
     qDebug()<<"request close";
     _responseState = ConnectionStateInit;
@@ -148,7 +148,7 @@ void RyConnection::onRequestError(QAbstractSocket::SocketError){
                     _responseSocket);
         */
     }
-    _responseSocket = NULL;
+    _responseSocket = nullptr;
 
     if(_sendingPipeData){
         if(_sendingPipeData->isContentLenthUnLimit()){
@@ -546,10 +546,10 @@ void RyConnection::doRequestToNetwork(){
             qDebug()<<hostAndPort;
 
             if(_isConnectTunnel){
-                _responseSocket->setProxy( QNetworkProxy(QNetworkProxy::HttpProxy,hAndP.at(0),hAndP.at(1).toInt()) );
+                _responseSocket->setProxy( QNetworkProxy(QNetworkProxy::HttpProxy,hAndP.at(0),hAndP.at(1).toUShort()) );
             }else{
                 currentProxy.setHostName(hAndP.at(0));
-                currentProxy.setPort(hAndP.at(1).toInt());
+                currentProxy.setPort(static_cast<quint16>(hAndP.at(1).toInt()));
                 _isUsingProxy = true;
             }
         }
@@ -659,7 +659,7 @@ bool RyConnection::checkLocalWebServer(RyPipeData_ptr& pipe){
     return false;
 }
 
-RyConnection::RuleMatchType RyConnection::checkRule(RyPipeData_ptr& pipe){
+RyConnection::RuleMatchType RyConnection::checkRule(RyPipeData_ptr&){
 
     RyRuleManager *manager = RyRuleManager::instance();//qApp->applicationDirPath()+"/config.txt");
     QList<QSharedPointer<RyRule> > matchResult;
@@ -669,6 +669,8 @@ RyConnection::RuleMatchType RyConnection::checkRule(RyPipeData_ptr& pipe){
     }else{
         _sendingPipeData->isMatchingRule = false;
     }
+
+    // TODO: 未处理多匹配情况
     for(int i=0,l=matchResult.size();i<l;++i){
         QSharedPointer<RyRule> rule = matchResult.at(i);
         qDebug()<<"rule found"<<rule->toJSON();
@@ -715,7 +717,7 @@ void RyConnection::getNewResponseSocket(RyPipeData_ptr&){
         _responseSocket->abort();
         _responseSocket->blockSignals(false);
         delete _responseSocket;
-        _responseSocket = NULL;
+        _responseSocket = nullptr;
     }
     _responseSocket = new QTcpSocket(this);
 

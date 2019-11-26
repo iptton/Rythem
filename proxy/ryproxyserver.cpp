@@ -1,6 +1,6 @@
 #include "ryproxyserver.h"
 
-RyProxyServer* RyProxyServer::_instance = 0;
+RyProxyServer* RyProxyServer::_instance = nullptr;
 RyProxyServer* RyProxyServer::instance(){
     if(!_instance){
         _instance = new RyProxyServer();

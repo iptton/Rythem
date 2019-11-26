@@ -55,18 +55,18 @@ enum
 /*
 
 Boolean setProxy(){
-    SCDynamicStoreRef store = SCDynamicStoreCreate(kCFAllocatorSystemDefault, CFSTR("rythem"), NULL, NULL);
+    SCDynamicStoreRef store = SCDynamicStoreCreate(kCFAllocatorSystemDefault, CFSTR("rythem"), nullptr, nullptr);
 
 
-  SCDynamicStoreRef dynRef=SCDynamicStoreCreate(kCFAllocatorSystemDefault, CFSTR("iked"), NULL, NULL);
+  SCDynamicStoreRef dynRef=SCDynamicStoreCreate(kCFAllocatorSystemDefault, CFSTR("iked"), nullptr, nullptr);
   CFDictionaryRef ipv4key = (CFDictionaryRef)SCDynamicStoreCopyValue(dynRef,CFSTR("State:/Network/Global/IPv4"));
   CFStringRef primaryserviceid = (CFStringRef)CFDictionaryGetValue(ipv4key,CFSTR("PrimaryService"));
   //Setup:/Network/Service/ServiceID/Proxies
 
-  CFStringRef primaryservicepath = (CFStringRef)CFStringCreateWithFormat(NULL,NULL,CFSTR("Setup:/Network/Service/%@/Proxies"),primaryserviceid);
+  CFStringRef primaryservicepath = (CFStringRef)CFStringCreateWithFormat(nullptr,nullptr,CFSTR("Setup:/Network/Service/%@/Proxies"),primaryserviceid);
 
   //State:/Network/Service/CB3E440C-8D1B-4752-BBB1-E5F031C8D0C8/Proxies
-  CFMutableDictionaryRef newdnskey =  CFDictionaryCreateMutable(NULL, 0, NULL,NULL);
+  CFMutableDictionaryRef newdnskey =  CFDictionaryCreateMutable(nullptr, 0, nullptr,nullptr);
   CFDictionarySetValue(newdnskey,CFSTR("HTTPProxy"),CFSTR("127.9.9.1"));
   CFDictionarySetValue(newdnskey,CFSTR("HTTPSProxy"),CFSTR("127.9.9.1"));
   CFShow(newdnskey);
@@ -81,17 +81,17 @@ Boolean setProxy(){
 }
 void setDNS(){
   //get current values
-  SCDynamicStoreRef dynRef=SCDynamicStoreCreate(kCFAllocatorSystemDefault, CFSTR("iked"), NULL, NULL);
+  SCDynamicStoreRef dynRef=SCDynamicStoreCreate(kCFAllocatorSystemDefault, CFSTR("iked"), nullptr, nullptr);
   CFDictionaryRef ipv4key = (CFDictionaryRef)SCDynamicStoreCopyValue(dynRef,CFSTR("State:/Network/Global/IPv4"));
   CFStringRef primaryserviceid = (CFStringRef)CFDictionaryGetValue(ipv4key,CFSTR("PrimaryService"));
-  CFStringRef primaryservicepath = (CFStringRef)CFStringCreateWithFormat(NULL,NULL,CFSTR("State:/Network/Service/%@/DNS"),primaryserviceid);
+  CFStringRef primaryservicepath = (CFStringRef)CFStringCreateWithFormat(nullptr,nullptr,CFSTR("State:/Network/Service/%@/DNS"),primaryserviceid);
   CFDictionaryRef dnskey = (CFDictionaryRef)SCDynamicStoreCopyValue(dynRef,primaryservicepath);
 
   //create new values
-  CFMutableDictionaryRef newdnskey = CFDictionaryCreateMutableCopy(NULL,0,dnskey);
+  CFMutableDictionaryRef newdnskey = CFDictionaryCreateMutableCopy(nullptr,0,dnskey);
   CFDictionarySetValue(newdnskey,CFSTR("DomainName"),CFSTR("iptton.com"));
 
-  CFMutableArrayRef dnsserveraddresses = CFArrayCreateMutable(NULL,0,NULL);
+  CFMutableArrayRef dnsserveraddresses = CFArrayCreateMutable(nullptr,0,nullptr);
   CFArrayAppendValue(dnsserveraddresses, CFSTR("8.8.8.8"));
   CFArrayAppendValue(dnsserveraddresses, CFSTR("4.3.2.2"));
   CFDictionarySetValue(newdnskey, CFSTR("ServerAddresses"), dnsserveraddresses);
@@ -114,7 +114,7 @@ void setDNS(){
 
 int runSelfByPriviledge(char *path_to_self){
   AuthorizationRef authorizationRef;
-  AuthorizationItem right = { kAuthorizationRightExecute, 0, NULL, 0 };
+  AuthorizationItem right = { kAuthorizationRightExecute, 0, nullptr, 0 };
   AuthorizationRights rightSet = { 1, &right };
   OSStatus status;
   AuthorizationFlags flags = kAuthorizationFlagDefaults | kAuthorizationFlagPreAuthorize | kAuthorizationFlagInteractionAllowed | kAuthorizationFlagExtendRights;
@@ -122,7 +122,7 @@ int runSelfByPriviledge(char *path_to_self){
   
   /* Create a new authorization reference which will later be passed to the tool. */
   
-  status = AuthorizationCreate(NULL, kAuthorizationEmptyEnvironment, kAuthorizationFlagDefaults, &authorizationRef);
+  status = AuthorizationCreate(nullptr, kAuthorizationEmptyEnvironment, kAuthorizationFlagDefaults, &authorizationRef);
   
   if (status != errAuthorizationSuccess)
   {
@@ -132,21 +132,21 @@ int runSelfByPriviledge(char *path_to_self){
   
   /* This shows how AuthorizationCopyRights() can be used in order to pre-authorize the user before attempting to perform the privileged operation.  Pre-authorization is optional but can be useful in certain situations.  For example, in the Installer application, the user is asked to pre-authorize before configuring the installation because it would be a waste of time to let the user proceed through the entire installation setup, only to be denied at the final stage because they weren't the administrator. */
   
-  status = AuthorizationCopyRights(authorizationRef, &rightSet, kAuthorizationEmptyEnvironment, flags, NULL);
+  status = AuthorizationCopyRights(authorizationRef, &rightSet, kAuthorizationEmptyEnvironment, flags, nullptr);
   
   if (status == errAuthorizationSuccess)
   {
 
     int status;
     int pid;
-    FILE *commPipe = NULL;
-    char *arguments[] = { "--self-repair", NULL };
+    FILE *commPipe = nullptr;
+    char *arguments[] = { "--self-repair", nullptr };
     char buffer[1024];
     
     /* Set our own stdin and stderr to be the communication channel with ourself. */
     
     IFDEBUG(fprintf(stderr, "Tool about to self-exec through AuthorizationExecuteWithPrivileges.\n");)
-    if (AuthorizationExecuteWithPrivileges(authorizationRef, path_to_self, kAuthorizationFlagDefaults, arguments, &commPipe))
+            if (AuthorizationExecuteWithPrivileges(authorizationRef, path_to_self, kAuthorizationFlagDefaults, arguments, &commPipe))
       return (kMyAuthorizedCommandInternalError);
 
     /* Flush any remaining output. */
@@ -181,16 +181,16 @@ int setpac(char *serviceName,char *pac){
         {
           case 0: /* Child */
           {            
-            char *const envp[] = { NULL };
+            char *const envp[] = { nullptr };
 
             //dup2(comms[1], 1);
             //close(comms[0]);
             //close(comms[1]);
             //fprintf(stderr,"is child %s\n",path_to_self);
             if (pac == 0){
-              retcode = execle("/usr/sbin/networksetup", "/usr/sbin/networksetup","-setautoproxystate",serviceName,"off",NULL,envp);
+              retcode = execle("/usr/sbin/networksetup", "/usr/sbin/networksetup","-setautoproxystate",serviceName,"off",nullptr,envp);
             }else{
-              retcode = execle("/usr/sbin/networksetup", "/usr/sbin/networksetup","-setautoproxyurl",serviceName,pac,NULL,envp);
+              retcode = execle("/usr/sbin/networksetup", "/usr/sbin/networksetup","-setautoproxyurl",serviceName,pac,nullptr,envp);
             }
             wait(&status);
             fprintf(stderr,"child exited..%d \n",retcode);
@@ -219,7 +219,7 @@ int main(int argc, char* const argv[])
   AuthorizationRef auth;
   
   uint32_t path_to_self_size = 0;
-  char *path_to_self = NULL;
+  char *path_to_self = nullptr;
   
   printf("called authtool..\n");
   path_to_self_size = MAXPATHLEN;
@@ -297,11 +297,11 @@ int main(int argc, char* const argv[])
   }
 
   if(!strcmp(argv[1],"--setpac")){
-    printf("--setpac %s\n",argv[2],argv[3]);
+    printf("--setpac %s %s\n",argv[2],argv[3]);
     return setpac(argv[2],argv[3]);
 
   }else if(!strcmp(argv[1],"--disablepac")){
     printf("--disablepac %s\n",argv[2]);
-    return setpac(argv[2],0);
+    return setpac(argv[2],nullptr);
   }
 }
